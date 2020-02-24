@@ -13,7 +13,7 @@ module.exports = (robot) => {
     const user_id = msg.message.user.id;
     msg.send(`Hay, <@${user_id}>`);
   })
-  robot.respond(/おみくじ/i, (msg) => {
+  robot.hear(/おみくじ/i, (msg) => {
 
     const user_id = msg.message.user.id;
     const omikuzi = [
