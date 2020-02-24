@@ -1,10 +1,21 @@
 /**
  * TODO
- * @ボット名　おみくじ　でおみくじを引けるようにする
+ * + @ボット名　おみくじ　でおみくじを引けるようにする
  */
 
 'use strict';
 module.exports = (robot) => {
+  robot.hear(/撮りたい|取りたい|とりたい/i, (msg) => {
+    const gosshoto = [
+      "撮りにいこーよ",
+      "一緒にとろ～",
+      "いいね!",
+      ":eeyan:"
+    ]
+    var omikuzi_randam = Math.floor(Math.random() * Object.keys(gosshoto).length);
+    msg.send(gosshoto[Math.floor(Math.random() * Object.keys(gosshoto).length)]);
+  })
+
   robot.hear(/hello>/i, (msg) => {
     const user_id = msg.message.user.id;
     msg.send(`Hello, <@${user_id}>`);
@@ -13,7 +24,7 @@ module.exports = (robot) => {
     const user_id = msg.message.user.id;
     msg.send(`Hay, <@${user_id}>`);
   })
-  robot.hear(/おみくじ/i, (msg) => {
+  robot.respond(/おみくじ/i, (msg) => {
 
     const user_id = msg.message.user.id;
     const omikuzi = [
@@ -32,7 +43,17 @@ module.exports = (robot) => {
       "EOS R",
       "α7r4",
       "Sigma fp",
-      "EOS 1D m4"
+      "EOS 1D m4",
+      "D6",
+      "EOS 5D",
+      "EOS 6D",
+      "EOS kiss m",
+      "EOS 8000D",
+      "D6",
+      "D850",
+      "α6600",
+      "GFX100",
+      "X-T3",
     ]
     var length = Object.keys(camera_omikuzi).length;//おみくじの数を取得
 
@@ -51,7 +72,11 @@ module.exports = (robot) => {
       msg.send(` <@${user_id}>は` + omikuzi[omikuzi_randam] + `だよ。今日のラッキーアイテムは` + camera_omikuzi[random] + 'だよ!');
     }
     console.log(random + "  カメラ = " + camera_omikuzi[random] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[omikuzi_randam]);
-    msg.send(` <@${user_id}>は` + omikuzi[omikuzi_randam] + `だよ。今日のラッキーアイテムは` + camera_omikuzi[random] + 'だ!');
+    msg.send(` <@${user_id}>は` + omikuzi[omikuzi_randam] + `だよ。今日のラッキーカメラは` + camera_omikuzi[random] + 'だ!');
 
+  });
+
+  robot.respond(/ヘルプ|help|-h/i, (msg) => {
+    msg.send(`このBOTに`)
   })
 }
