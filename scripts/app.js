@@ -11,9 +11,17 @@
 const fs = require('fs');
 const fileName = "./Json/input.json"
 let dataMap = new Map();
+var nowDate;
 //おみくじの結果を保存する
 function saveData() {
   fs.writeFileSync(fileName, JSON.stringify(Array.from(dataMap)), 'utf8');
+}
+
+//おみくじの結果を取得する
+function loadData() {
+  let sdataMap = fs.readFileSync(fileName, JSON, 'utf-8');
+  console.log("dataMap = " + sdataMap);
+
 }
 
 module.exports = (robot) => {
@@ -21,6 +29,16 @@ module.exports = (robot) => {
     const gosshoto = [
       "撮りにいこーよ",
       "一緒にとろ～",
+      "いいね!",
+      ":eeyan:"
+    ]
+    var omikuzi_randam = Math.floor(Math.random() * Object.keys(gosshoto).length);
+    msg.send(gosshoto[Math.floor(Math.random() * Object.keys(gosshoto).length)]);
+  })
+  robot.hear(/撮れた|とれた/i, (msg) => {
+    const gosshoto = [
+      "うまいね！",
+      "いいじゃん！",
       "いいね!",
       ":eeyan:"
     ]
@@ -36,7 +54,11 @@ module.exports = (robot) => {
     const user_id = msg.message.user.id;
     msg.send(`Hay, <@${user_id}>`);
   })
-  robot.respond(/おみくじ/i, (msg) => {
+  robot.hear(/おみくじ/i, (msg) => {
+    nowDate = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+    console.log("今の時間 = " + nowDate);
+    
+
 
     const user_id = msg.message.user.id;
     const omikuzi = [
@@ -67,26 +89,23 @@ module.exports = (robot) => {
       "GFX100",
       "X-T3",
     ]
+
     var length = Object.keys(camera_omikuzi).length;//おみくじの数を取得
     var random = Math.floor(Math.random() * length);//おみくじを選ぶ乱数を作成
 
-    // for (let i = 0; i <= 10; i++) {
-    //   //テストようなので後で削除する
-    //   random = Math.floor(Math.random() * length);
-    //   omikuzi_randam = Math.floor(Math.random() * Object.keys(omikuzi).length);
-    //   //テスト用に0~10まで代入するやつ
-    //   // console.log(random + "  カメラ = " + camera_omikuzi[i] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[i]);
-    //   // msg.send(` <@${user_id}>は` + omikuzi[i] + `だよ、今日のラッキーアイテムは` + camera_omikuzi[i] + 'だよ!');
-    //   console.log(random + "  カメラ = " + camera_omikuzi[random] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[omikuzi_randam]);
-    //   msg.send(` <@${user_id}>は` + omikuzi[omikuzi_randam] + `だよ。今日のラッキーアイテムは` + camera_omikuzi[random] + 'だよ!');
-    // }
+    for (let i = 0; i <= 40; i++) {
 
-    // dataMap.set({ "${user_id}": `${user_id}` });
-    dataMap.set({ [user_id]: [`${omikuzi[omikuzi_randam]}`, camera_omikuzi[random]] });
-    
-    console.log(random + "  カメラ = " + camera_omikuzi[random] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[omikuzi_randam]);
-    msg.send(` <@${user_id}>は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!');
+      // loadData();
+    }
+    //おみくじの結果をmap関数に保存
+    dataMap.set({ [user_id]: [`${omikuzi[omikuzi_randam]}`, camera_omikuzi[random], [nowDate]] });
+
+    console.debug(random + "  カメラ = " + camera_omikuzi[random] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[omikuzi_randam]);
+
+    msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!持っていこう！');
     saveData();
+    // dataMap.set({ "${user_id}": `${user_id}` });
+
     // UNTANCM8U
   });
 
