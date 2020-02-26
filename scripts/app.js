@@ -10,7 +10,8 @@
 
 const fs = require('fs');
 const fileName = "./Json/input.json"
-let dataMap = new Map();
+var dataMap = new Map();
+var dataMapload;
 var nowDate;
 //おみくじの結果を保存する
 function saveData() {
@@ -19,12 +20,20 @@ function saveData() {
 
 //おみくじの結果を取得する
 function loadData() {
-  let sdataMap = fs.readFileSync(fileName, JSON, 'utf-8');
-  console.log("dataMap = " + sdataMap);
 
+
+  dataMapload = map(fs.readFileSync(fileName, JSON, 'utf-8'));
+  console.log("dataMap = " +  dataMapload);
+  console.info("23行目:  dataMap[2] = " + dataMapload[1]);
+  
+  // console.log(" = dataMap.prototype.get('1');" + dataMap.prototype.get("1") );
+  
 }
-
+loadData();
+// dataMap = dataMapload;
 module.exports = (robot) => {
+  loadData();//Jsonファイルからデータをデータを読み込み
+
   robot.hear(/撮りたい|取りたい|とりたい/i, (msg) => {
     const gosshoto = [
       "撮りにいこーよ",
@@ -55,6 +64,9 @@ module.exports = (robot) => {
     msg.send(`Hay, <@${user_id}>`);
   })
   robot.hear(/おみくじ/i, (msg) => {
+
+
+
     nowDate = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
     console.log("今の時間 = " + nowDate);
     
@@ -92,18 +104,18 @@ module.exports = (robot) => {
 
     var length = Object.keys(camera_omikuzi).length;//おみくじの数を取得
     var random = Math.floor(Math.random() * length);//おみくじを選ぶ乱数を作成
-
     for (let i = 0; i <= 40; i++) {
 
       // loadData();
     }
     //おみくじの結果をmap関数に保存
-    dataMap.set({ [user_id]: [`${omikuzi[omikuzi_randam]}`, camera_omikuzi[random], [nowDate]] });
+    dataMap.set({ [user_id]: [`${omikuzi[omikuzi_randam]}`, camera_omikuzi[random], "date", [nowDate]] });
 
-    console.debug(random + "  カメラ = " + camera_omikuzi[random] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[omikuzi_randam]);
+    console.debug('[' + new Date() + ']' + random + "  カメラ = " + camera_omikuzi[random] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[omikuzi_randam]);
 
     msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!持っていこう！');
     saveData();
+    loadData(user_id); //テスト
     // dataMap.set({ "${user_id}": `${user_id}` });
 
     // UNTANCM8U
