@@ -14,7 +14,18 @@ var dataMap = new Map();
 var dataMapload;
 var nowDate;
 //おみくじの結果を保存する
-function saveData() {
+function saveData(name) {
+  console.log("dataMap['2020-1-27'] = " + dataMap.get(1));
+  console.log("dataMap['2020-1-27'] = " + dataMap.get(2));
+  console.log("dataMap['2020-1-27'] = " + dataMap.get(3));
+  console.log("dataMap['2020-1-27'] = " + dataMap.get(["NTANCM8U"]));
+  console.log("dataMap['2020-1-27'] = " + dataMap);
+  console.log("dataMap['2020-1-27'] = " + dataMap[0]);
+  console.log("dataMap keys " + dataMap.keys());
+  var keys = dataMap.keys();
+  for (var key of keys) {
+    console.log(key);
+  }
   fs.writeFileSync(fileName, JSON.stringify(Array.from(dataMap)), 'utf8');
 }
 
@@ -22,17 +33,19 @@ function saveData() {
 function loadData() {
 
 
-  dataMapload = map(fs.readFileSync(fileName, JSON, 'utf-8'));
-  console.log("dataMap = " +  dataMapload);
-  console.info("23行目:  dataMap[2] = " + dataMapload[1]);
+
+  // dataMapload = fs.readFileSync(fileName, 'utf8');
+  // dataMap = new Map(JSON.parse(dataMapload));
+  // console.log("dataMap = " +  dataMap);
+  // console.info("23行目:  dataMap[2] = " + dataMap.get["UNTANCM8U"]);
   
   // console.log(" = dataMap.prototype.get('1');" + dataMap.prototype.get("1") );
   
 }
-loadData();
+// loadData();
 // dataMap = dataMapload;
 module.exports = (robot) => {
-  loadData();//Jsonファイルからデータをデータを読み込み
+  //loadData();//Jsonファイルからデータをデータを読み込み
 
   robot.hear(/撮りたい|取りたい|とりたい/i, (msg) => {
     const gosshoto = [
@@ -112,17 +125,18 @@ module.exports = (robot) => {
     dataMap.set({ [user_id]: [`${omikuzi[omikuzi_randam]}`, camera_omikuzi[random], "date", [nowDate]] });
 
     console.debug('[' + new Date() + ']' + random + "  カメラ = " + camera_omikuzi[random] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[omikuzi_randam]);
+    console.info("User の投稿した時間 = " + dataMap.get());
 
     msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!持っていこう！');
     saveData();
-    loadData(user_id); //テスト
+    //loadData(user_id); //テスト
     // dataMap.set({ "${user_id}": `${user_id}` });
 
     // UNTANCM8U
   });
 
   robot.respond(/ヘルプ|help|-h/i, (msg) => {
-    msg.send(`このBOTに`)
+    msg.send(`このBOTに@おみくじでおみくじが引けます。おみくじは一日に一回変わります。\n写真を撮ると褒めてくれます。`);
   })
 }
 
