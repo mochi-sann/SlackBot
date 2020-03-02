@@ -40,7 +40,7 @@ function loadData() {
 module.exports = (robot) => {
   //loadData();//Jsonファイルからデータをデータを読み込み
 
-  robot.hear(/撮りたい|取りたい|とりたい/i, (msg) => {
+  robot.hear(/撮りたい|取りたい|とりたい|撮ろう|撮る/i, (msg) => {
     const gosshoto = [
       "撮りにいこーよ",
       "一緒にとろ～",
@@ -69,7 +69,7 @@ module.exports = (robot) => {
     const user_id = msg.message.user.id;
     msg.send(`Hay, <@${user_id}>`);
   })
-  robot.hear(/おみくじ/i, (msg) => {
+  robot.respond(/おみくじ/i, (msg) => {
 
 
 
@@ -106,6 +106,10 @@ module.exports = (robot) => {
       "α6600",
       "GFX100",
       "X-T3",
+      "EOS M10",
+      "EOS Kiss X10i",
+      "α7 III",
+      "E-M10"
     ]
 
     var length = Object.keys(camera_omikuzi).length;//おみくじの数を取得
@@ -122,17 +126,22 @@ module.exports = (robot) => {
 
     try {
       if (user_data[user_id].data == nowDate) {
-      msg.send(` <@${user_id}>の今日の運勢は` + user_data[user_id].unsei + `だよ。ラッキーカメラは` + user_data[user_id].camera + 'だ!持っていこう！');
+        todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random])
+      // msg.send(` <@${user_id}>の今日の運勢は` + user_data[user_id].unsei + `だよ。今日は` + user_data[user_id].camera + 'を持って撮りに行こう!　いい写真が撮れるといいね');
     } else {
-      saveData();
-      msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!持っていこう！');
+        saveData();
+        todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random])
+      // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
     }
 
     } catch (error) {
       saveData();
-      msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!持っていこう！');
+      todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random])
+      // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
     }
-    
+    function todayomikuzi(userid,unsei,camera) {
+      msg.send(`<@${userid}>の今日の運勢は` + unsei + `だよ。今日は` + camera + 'を持って撮りに行こう!　いい写真が撮れるといいね');
+    }
 
     
     
@@ -149,10 +158,10 @@ module.exports = (robot) => {
       };
 
       // var testttttt = `user_data[asrtasrtaerta].data`;
-      console.log("user_data   = " + user_data[asrtasrtaerta].data);
-      console.log("date  = " + user_data[user_id].data);
+
+      console.log("—————————————————————————————————————————————————————————————————————————————————\n " + "user = " + user_id + "\n" +"date  = " + user_data[user_id].data );
       console.log("運勢  = " + user_data[user_id].unsei);
-      console.log("カメラ  = " + user_data[user_id].camera);
+      console.log("カメラ  = " + user_data[user_id].camera + "\n—————————————————————————————————————————————————————————————————————————————————");
       
       
       // console.log("dataMap[user_id)] = " + dataMap.get(`UNTANCM8U`));
