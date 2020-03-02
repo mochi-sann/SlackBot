@@ -14,21 +14,14 @@ var dataMap = new Map();
 var dataMapload;
 var nowDate;
 //おみくじの結果を保存する
-function saveData(name) {
-  console.log("dataMap['2020-1-27'] = " + dataMap.get(1));
-  console.log("dataMap['2020-1-27'] = " + dataMap.get(2));
-  console.log("dataMap['2020-1-27'] = " + dataMap.get(3));
-  console.log("dataMap['2020-1-27'] = " + dataMap.get(["NTANCM8U"]));
-  console.log("dataMap['2020-1-27'] = " + dataMap);
-  console.log("dataMap['2020-1-27'] = " + dataMap[0]);
-  console.log("dataMap keys " + dataMap.keys());
-  var keys = dataMap.keys();
-  for (var key of keys) {
-    console.log(key);
-  }
-  fs.writeFileSync(fileName, JSON.stringify(Array.from(dataMap)), 'utf8');
-}
 
+const user_data = {
+  "mochi": {
+    data: "2020/03/02",
+    unsei: "大吉",
+    camera : "Eos 5D"
+  }
+};
 //おみくじの結果を取得する
 function loadData() {
 
@@ -122,17 +115,59 @@ module.exports = (robot) => {
       // loadData();
     }
     //おみくじの結果をmap関数に保存
-    dataMap.set({ [user_id]: [`${omikuzi[omikuzi_randam]}`, camera_omikuzi[random], "date", [nowDate]] });
+    // dataMap.set({ "user": [`${user_id}`], "omikuzi": [`${omikuzi[omikuzi_randam]}`, "omikuzi" [camera_omikuzi] , "date", [nowDate]] });
 
     console.debug('[' + new Date() + ']' + random + "  カメラ = " + camera_omikuzi[random] + ' msg = ' + `<@${user_id}> 運勢 = ` + omikuzi[omikuzi_randam]);
     console.info("User の投稿した時間 = " + dataMap.get());
 
-    msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!持っていこう！');
-    saveData();
+    try {
+      if (user_data[user_id].data == nowDate) {
+      msg.send(` <@${user_id}>の今日の運勢は` + user_data[user_id].unsei + `だよ。ラッキーカメラは` + user_data[user_id].camera + 'だ!持っていこう！');
+    } else {
+      saveData();
+      msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!持っていこう！');
+    }
+
+    } catch (error) {
+      saveData();
+      msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。ラッキーカメラは` + camera_omikuzi[random] + 'だ!持っていこう！');
+    }
+    
+
+    
+    
     //loadData(user_id); //テスト
     // dataMap.set({ "${user_id}": `${user_id}` });
 
     // UNTANCM8U
+    function saveData(name) {
+      var asrtasrtaerta = "mochi"
+      user_data[user_id] = {
+        data: `${nowDate}`,
+        unsei: `${omikuzi[omikuzi_randam]}`,
+        camera: `${camera_omikuzi[random]}`
+      };
+
+      // var testttttt = `user_data[asrtasrtaerta].data`;
+      console.log("user_data   = " + user_data[asrtasrtaerta].data);
+      console.log("date  = " + user_data[user_id].data);
+      console.log("運勢  = " + user_data[user_id].unsei);
+      console.log("カメラ  = " + user_data[user_id].camera);
+      
+      
+      // console.log("dataMap[user_id)] = " + dataMap.get(`UNTANCM8U`));
+      // console.log("dataMap['2020-1-27'] = " + dataMap.get(['UNTANCM8U']));
+      // console.log("dataMap['2020-1-2'] = " + dataMap[user_id].data);
+      // console.log("dataMap['2020-1-27'] = " + dataMap.get(["NTANCM8U"]));
+      // console.log("dataMap['2020-1-27'] = " + dataMap.get());
+      // console.log("dataMap['2020-1-27'] = " + dataMap[0]);
+      // console.log("dataMap keys " + dataMap.keys());
+      var keys = dataMap.keys();
+      for (var key of keys) {
+        console.log(key);
+      }
+      fs.writeFileSync(fileName, JSON.stringify(Array.from(dataMap)), 'utf8');
+    }
   });
 
   robot.respond(/ヘルプ|help|-h/i, (msg) => {
