@@ -13,32 +13,32 @@ const fileName = "./Json/input.json"
 var dataMap = new Map();
 var dataMapload;
 var nowDate;
+
+
+
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+const dom = new JSDOM(`<html><body><div id="aaa">AAA<div></body></html>`);
+const { document } = dom.window;
+const jquery = require('jquery');
+const $ = jquery(dom.window);
+
 //おみくじの結果を保存する
 
 const user_data = {
   "mochi": {
     data: "2020/03/02",
     unsei: "大吉",
-    camera : "Eos 5D"
+    camera: "Eos 5D"
   }
 };
 //おみくじの結果を取得する
-function loadData() {
 
-
-
-  // dataMapload = fs.readFileSync(fileName, 'utf8');
-  // dataMap = new Map(JSON.parse(dataMapload));
-  // console.log("dataMap = " +  dataMap);
-  // console.info("23行目:  dataMap[2] = " + dataMap.get["UNTANCM8U"]);
-  
-  // console.log(" = dataMap.prototype.get('1');" + dataMap.prototype.get("1") );
-  
-}
 // loadData();
 // dataMap = dataMapload;
 module.exports = (robot) => {
   //loadData();//Jsonファイルからデータをデータを読み込み
+
 
   robot.hear(/撮りたい|取りたい|とりたい|撮ろう|撮る/i, (msg) => {
     const gosshoto = [
@@ -75,7 +75,7 @@ module.exports = (robot) => {
 
     nowDate = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
     console.log("今の時間 = " + nowDate);
-    
+
 
 
     const user_id = msg.message.user.id;
@@ -127,24 +127,24 @@ module.exports = (robot) => {
     try {
       if (user_data[user_id].data == nowDate) {
         todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random])
-      // msg.send(` <@${user_id}>の今日の運勢は` + user_data[user_id].unsei + `だよ。今日は` + user_data[user_id].camera + 'を持って撮りに行こう!　いい写真が撮れるといいね');
-    } else {
+        // msg.send(` <@${user_id}>の今日の運勢は` + user_data[user_id].unsei + `だよ。今日は` + user_data[user_id].camera + 'を持って撮りに行こう!　いい写真が撮れるといいね');
+      } else {
         saveData();
         todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random])
-      // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
-    }
+        // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
+      }
 
     } catch (error) {
       saveData();
       todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random])
       // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
     }
-    function todayomikuzi(userid,unsei,camera) {
+    function todayomikuzi(userid, unsei, camera) {
       msg.send(`<@${userid}>の今日の運勢は` + unsei + `だよ。今日は` + camera + 'を持って撮りに行こう!　いい写真が撮れるといいね');
     }
 
-    
-    
+
+
     //loadData(user_id); //テスト
     // dataMap.set({ "${user_id}": `${user_id}` });
 
@@ -159,11 +159,11 @@ module.exports = (robot) => {
 
       // var testttttt = `user_data[asrtasrtaerta].data`;
 
-      console.log("—————————————————————————————————————————————————————————————————————————————————\n " + "user = " + user_id + "\n" +"date  = " + user_data[user_id].data );
+      console.log("—————————————————————————————————————————————————————————————————————————————————\n " + "user = " + user_id + "\n" + "date  = " + user_data[user_id].data);
       console.log("運勢  = " + user_data[user_id].unsei);
       console.log("カメラ  = " + user_data[user_id].camera + "\n—————————————————————————————————————————————————————————————————————————————————");
-      
-      
+
+
       // console.log("dataMap[user_id)] = " + dataMap.get(`UNTANCM8U`));
       // console.log("dataMap['2020-1-27'] = " + dataMap.get(['UNTANCM8U']));
       // console.log("dataMap['2020-1-2'] = " + dataMap[user_id].data);
@@ -181,6 +181,29 @@ module.exports = (robot) => {
 
   robot.respond(/ヘルプ|help|-h/i, (msg) => {
     msg.send(`このBOTに@おみくじでおみくじが引けます。おみくじは一日に一回変わります。\n写真を撮ると褒めてくれます。`);
+  })
+
+  robot.hear(/天気/i, (msg) => {
+    $(function () {
+      var API_KEY = 'ad14112cc3761af968355faebdb8a93d'
+      var city = 'Tokyo';
+      var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',jp&units=metric&APPID=' + API_KEY;
+      $.ajax({
+        url: url,
+        dataType: "json",
+        type: 'GET',
+      })
+        .done(function (data) {
+          console.log("天気");
+          console.log(data.list[1]);
+          console.log("url =  "  + url);
+          
+          msg.send(data);
+        })
+        .fail(function (data) {
+          msg.send("データを取得でみませんでした。");
+        });
+    });
   })
 }
 
