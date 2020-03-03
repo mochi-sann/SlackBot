@@ -187,7 +187,7 @@ module.exports = (robot) => {
     $(function () {
       var API_KEY = 'ad14112cc3761af968355faebdb8a93d'
       var city = 'Tokyo';
-      var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',jp&units=metric&APPID=' + API_KEY;
+      var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',jp&units=metric&APPID=' + API_KEY + "&lang=ja";
       $.ajax({
         url: url,
         dataType: "json",
@@ -195,13 +195,54 @@ module.exports = (robot) => {
       })
         .done(function (data) {
           console.log("天気");
-          console.log(data.list[1]);
-          console.log("url =  "  + url);
+          console.log(data.list[0].weather[0].main);
+          console.log("url =  " + url);
+          console.log(data.list.length);
           
-          msg.send(data);
+          var hizuke = data.list[0].dt_txt.split("-");
+          var tenki;
+          var tenkiaa;
+
+          
+
+
+
+          for (let tennki = 0; tennki < 16; tennki++) {
+            // console.log(data.list[tennki].dt_txt + "  " + data.list[tennki].weather[0].main);
+
+            hizuke = data.list[tennki].dt_txt.split("-");
+            if (tennki === 0) {
+              tenkiaa = hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
+            } else {
+              tenkiaa += hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
+            }
+            
+            switch (data.list[tennki].weather[0].main) {
+              case "Clear":
+                tenkiaa += ":sunny:\n";
+                break;
+              case "Clouds":
+                tenkiaa += ":cloud:\n";
+                break
+              case "Rain":
+                tenkiaa += ":rain_cloud:\n";
+                break
+              default:
+                tenkiaa += data.list[0].weather[0].main + "\n\n_*!!実装されてないものがありますこのBOTを作った製作者に伝えてください!!*_\n\n"
+                break;
+            }
+            
+          }
+          console.log(tenkiaa);
+          
+          msg.send(tenkiaa);
+
+          
         })
         .fail(function (data) {
-          msg.send("データを取得でみませんでした。");
+          msg.send("データを取得できませんでした。");
+          console.error("データを取得できませんせんでした");
+
         });
     });
   })
