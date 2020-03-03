@@ -183,7 +183,9 @@ module.exports = (robot) => {
     msg.send(`このBOTに@おみくじでおみくじが引けます。おみくじは一日に一回変わります。\n写真を撮ると褒めてくれます。`);
   })
 
-  robot.hear(/天気/i, (msg) => {
+  robot.respond(/天気/i, (msg) => {
+    console.log("喋ったこと = " + msg.message.text);
+    
     $(function () {
       var API_KEY = 'ad14112cc3761af968355faebdb8a93d'
       var city = 'Tokyo';
@@ -212,26 +214,27 @@ module.exports = (robot) => {
 
             hizuke = data.list[tennki].dt_txt.split("-");
             if (tennki === 0) {
-              tenkiaa = hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
+              tenkiaa = "東京の天気予報です\n" + hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 " ;
             } else {
-              tenkiaa += hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
+              tenkiaa += hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 " ;
             }
             
             switch (data.list[tennki].weather[0].main) {
               case "Clear":
-                tenkiaa += ":sunny:\n";
+                tenkiaa += ":sunny:";
                 break;
               case "Clouds":
-                tenkiaa += ":cloud:\n";
+                tenkiaa += ":cloud:";
                 break
               case "Rain":
-                tenkiaa += ":rain_cloud:\n";
+                tenkiaa += ":rain_cloud:";
                 break
               default:
                 tenkiaa += data.list[0].weather[0].main + "\n\n_*!!実装されてないものがありますこのBOTを作った製作者に伝えてください!!*_\n\n"
                 break;
             }
-            
+            tenkiaa += data.list[tennki].main.temp + "℃\n";
+
           }
           console.log(tenkiaa);
           
@@ -249,3 +252,5 @@ module.exports = (robot) => {
 }
 
 console.log("起動しました");
+
+
