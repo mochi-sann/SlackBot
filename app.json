@@ -1,0 +1,10 @@
+{
+  "name": "pohot club bot",
+  "description": "Enquetes for favorite foods.",
+  "repository": "https://github.com/Mochichi2003/SlackBot",
+  "logo": "",
+  "keywords": [
+    "node"
+  ],
+  "image": "heroku/nodejs"
+}
