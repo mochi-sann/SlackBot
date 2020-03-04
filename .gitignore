@@ -5,3 +5,4 @@ node_modules
 *.log
 scripts/data.json
 json
+citylist.json
