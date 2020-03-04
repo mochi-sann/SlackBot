@@ -262,9 +262,9 @@ module.exports = (robot) => {
           });
 
       });
-    }
-  })
-}
+    };
+  });
+};
 
 console.log("起動しました");
 
