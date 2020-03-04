@@ -9,8 +9,8 @@
 'use strict';
 
 const fs = require('fs');
-const fileName = "./Json/input.json"
-var dataMap = new Map();
+// const fileName = "./Json/input.json"
+// var dataMap = new Map();
 var dataMapload;
 var nowDate;
 
@@ -145,10 +145,7 @@ module.exports = (robot) => {
 
 
 
-    //loadData(user_id); //テスト
-    // dataMap.set({ "${user_id}": `${user_id}` });
 
-    // UNTANCM8U
     function saveData(name) {
       var asrtasrtaerta = "mochi"
       user_data[user_id] = {
@@ -163,14 +160,6 @@ module.exports = (robot) => {
       console.log("運勢  = " + user_data[user_id].unsei);
       console.log("カメラ  = " + user_data[user_id].camera + "\n—————————————————————————————————————————————————————————————————————————————————");
 
-
-      // console.log("dataMap[user_id)] = " + dataMap.get(`UNTANCM8U`));
-      // console.log("dataMap['2020-1-27'] = " + dataMap.get(['UNTANCM8U']));
-      // console.log("dataMap['2020-1-2'] = " + dataMap[user_id].data);
-      // console.log("dataMap['2020-1-27'] = " + dataMap.get(["NTANCM8U"]));
-      // console.log("dataMap['2020-1-27'] = " + dataMap.get());
-      // console.log("dataMap['2020-1-27'] = " + dataMap[0]);
-      // console.log("dataMap keys " + dataMap.keys());
       var keys = dataMap.keys();
       for (var key of keys) {
         console.log(key);
@@ -184,7 +173,7 @@ module.exports = (robot) => {
   })
 
   robot.hear(/天気/i, (msg) => {
-    const endscript;
+
     console.log("喋ったこと = " + msg.message.text);
     if (msg.message.text.match(/東京/)) {
       console.log("とおおおおおおおおおおおおおおおおきょお");
@@ -202,96 +191,78 @@ module.exports = (robot) => {
     } else if (msg.message.text.match(/大宮/)) {
       city = "Ōmiya";
     } else {
+      city = false;
       msg.send("現在対応しているのは東京、新潟、札幌、横浜、大宮です")
     }
     console.log("city = " + city);
-    
-    // switch (msg.message.text) {
-    //   case /東京/i:
-
-    //     break;
-    //   case /新潟/i:
-    //     city = "Niigata-shi";
-    //     break;
-    //   case /札幌/i:
-    //     city = "Sapporo-shi";
-    //     break;
-    //   case /横浜/i:
-    //     city = "Yokohama-shi";
-    //     break
-    //   case /大宮/i:
-    //     city = "Ōmiya";
-    //     break
-    //   default:
-    //     msg.send("現在対応しているのは東京、新潟、札幌、横浜、大宮です")
-    //     city = "Tokyo";
-    //     break;
-    // }
-    $(function () {
-      var API_KEY = 'ad14112cc3761af968355faebdb8a93d'
-
-      var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',jp&units=metric&APPID=' + API_KEY + "&lang=ja";
-      $.ajax({
-        url: url,
-        dataType: "json",
-        type: 'GET',
-      })
-        .done(function (data) {
-          console.log("天気");
-          console.log(data.list[0].weather[0].main);
-          console.log("url =  " + url);
-          console.log(data.list.length);
-
-          var hizuke = data.list[0].dt_txt.split("-");
-          var tenki;
-          var tenkiaa;
+    if (city != false) {
 
 
+      $(function () {
+        var API_KEY = 'ad14112cc3761af968355faebdb8a93d'
 
-
-
-          for (let tennki = 0; tennki < 16; tennki++) {
-            // console.log(data.list[tennki].dt_txt + "  " + data.list[tennki].weather[0].main);
-
-            hizuke = data.list[tennki].dt_txt.split("-");
-            if (tennki == 0) {
-              tenkiaa = "東京の天気予報です\n" + hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
-            } else {
-              tenkiaa += hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
-            }
-            console.debug("data.list[tennki].weather[0].main = " + data.list[tennki].weather[0].main)
-            switch (data.list[tennki].weather[0].main) {
-              case "Clear":
-                tenkiaa += ":sunny:";
-                break;
-              case "Clouds":
-                tenkiaa += ":cloud:";
-                break
-              case "Rain":
-                tenkiaa += ":rain_cloud:";
-                break
-              case "Snow":
-                tenkiaa += ":snowman:"
-                break
-              default:
-                tenkiaa += data.list[tennki].weather[0].main + "\n\n_*!!実装されてないものがありますこのBOTを作った製作者に伝えてください!!*_\n\n"
-                break;
-            }
-            tenkiaa += " "+data.list[tennki].main.temp.toFixed() + "℃\n";
-
-          }
-          console.log(tenkiaa);
-
-          msg.send(tenkiaa);
-
-
+        var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + ',jp&units=metric&APPID=' + API_KEY + "&lang=ja";
+        $.ajax({
+          url: url,
+          dataType: "json",
+          type: 'GET',
         })
-        .fail(function (data) {
-          msg.send("データを取得できませんでした。");
-          console.error("データを取得できませんせんでした");
+          .done(function (data) {
+            console.log("天気");
+            console.log(data.list[0].weather[0].main);
+            console.log("url =  " + url);
+            console.log(data.list.length);
 
-        });
-    });
+            var hizuke = data.list[0].dt_txt.split("-");
+            var tenki;
+            var tenkiaa;
+
+
+
+
+
+            for (let tennki = 0; tennki < 16; tennki++) {
+              // console.log(data.list[tennki].dt_txt + "  " + data.list[tennki].weather[0].main);
+
+              hizuke = data.list[tennki].dt_txt.split("-");
+              if (tennki == 0) {
+                tenkiaa = "東京の天気予報です\n" + hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
+              } else {
+                tenkiaa += hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
+              }
+              console.debug("data.list[tennki].weather[0].main = " + data.list[tennki].weather[0].main)
+              switch (data.list[tennki].weather[0].main) {
+                case "Clear":
+                  tenkiaa += ":sunny:";
+                  break;
+                case "Clouds":
+                  tenkiaa += ":cloud:";
+                  break
+                case "Rain":
+                  tenkiaa += ":rain_cloud:";
+                  break
+                case "Snow":
+                  tenkiaa += ":snowman:"
+                  break
+                default:
+                  tenkiaa += data.list[tennki].weather[0].main + "\n\n_*!!実装されてないものがありますこのBOTを作った製作者に伝えてください!!*_\n\n"
+                  break;
+              }
+              tenkiaa += " " + data.list[tennki].main.temp.toFixed() + "℃\n";
+
+            }
+            console.log(tenkiaa);
+
+            msg.send(tenkiaa);
+          })
+          .fail(function (data) {
+            msg.send("データを取得できませんでした。");
+            console.error("データを取得できませんせんでした");
+
+          });
+
+      });
+    }
   })
 }
 
