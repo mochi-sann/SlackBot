@@ -236,7 +236,7 @@ module.exports = (robot) => {
 
 
 
-            for (let tennki = 0; tennki < 16; tennki++) {
+            for (let tennki = 0; tennki < 20; tennki++) {
               // console.log(data.list[tennki].dt_txt + "  " + data.list[tennki].weather[0].main);
               // console.log("\nhizuke[2].split('')[1].split(':')[0] === " + hizuke[2].split(" ")[1].split(":")[0] +9);
 
