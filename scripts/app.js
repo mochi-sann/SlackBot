@@ -184,7 +184,7 @@ module.exports = (robot) => {
 
 
   robot.respond(/ヘルプ|help|-h/i, (msg) => {
-    msg.send(`このBOTに@おみくじでおみくじが引けます。おみくじは一日に一回変わります。\n写真を撮ると褒めてくれます。`);
+    msg.send(`このBOTに@おみくじでおみくじが引けます。おみくじは一日に一回変わります。\nこのBOTの@photo_club_bot 天気 {場所} で2日間の天気予報をを知ることができます。\nこのボットのGitリポジトリ→ https://github.com/Mochichi2003/SlackBot`);
   })
 
   robot.respond(/天気/i, (msg) => {
