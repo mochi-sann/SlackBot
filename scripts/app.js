@@ -205,6 +205,8 @@ module.exports = (robot) => {
       city = "Yokohama-shi";
     } else if (msg.message.text.match(/大宮/)) {
       city = "Ōmiya";
+    } else if (msg.message.text.match(/新潟/)) {
+      city = "Niigata-shi";
     } else {
       city = false;
       msg.send("現在対応しているのは東京、新潟、札幌、横浜、大宮です")
@@ -246,7 +248,7 @@ module.exports = (robot) => {
               } else {
                 tenkiaa += ">" + hizuke[0] + "年" + hizuke[1] + "月" + hizuke[2].split(" ")[0] + "日 " + hizuke[2].split(" ")[1].split(":")[0] + "時 ";
               }
-              console.debug("data.list[tennki].weather[0].main = " + data.list[tennki].weather[0].main)
+              // console.debug("data.list[tennki].weather[0].main = " + data.list[tennki].weather[0].main)
               switch (data.list[tennki].weather[0].main) {
                 case "Clear":
                   tenkiaa += ":sunny:";
