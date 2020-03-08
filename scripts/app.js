@@ -34,12 +34,15 @@ const user_data = {
   }
 }
 
+  
   ;
 //おみくじの結果を取得する
 // loadData();
 // dataMap = dataMapload;
 module.exports = robot => {
-  robot.respond(/おみくじ/i, msg => {
+
+
+  robot.respond(/カメラガチャ/i, msg => {
     nowDate = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
     console.log("今の時間 = " + nowDate);
     const user_id = msg.message.user.id;
@@ -49,9 +52,7 @@ module.exports = robot => {
     const camera_omikuzi = ["α9m2", "EOS R", "α7r4", "Sigma fp", "EOS 1D m4", "D6", "EOS 5D", "EOS 6D", "EOS kiss m", "EOS 8000D", "D6", "D850", "α6600", "GFX100", "X-T3", "EOS M10", "EOS Kiss X10i", "α7 III", "E-M10"];
     var length = Object.keys(camera_omikuzi).length; //おみくじの数を取得
     var random = Math.floor(Math.random() * length); //おみくじを選ぶ乱数を作成
-    for (let i = 0;
-      i <= 40;
-      i++) {
+    for (let i = 0;i <= 40;i++) {
       // loadData();
     } //おみくじの結果をmap関数に保存
     // dataMap.set({ "user": [`${user_id}`], "omikuzi": [`${omikuzi[omikuzi_randam]}`, "omikuzi" [camera_omikuzi] , "date", [nowDate]] });
@@ -74,24 +75,12 @@ module.exports = robot => {
       todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random]); // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
     }
     function todayomikuzi(userid, unsei, camera) {
-      msg.send(`<@$ {
-        userid
-      }
-      >の今日の運勢は` + unsei + `だよ。今日は` + camera + "を持って撮りに行こう!　いい写真が撮れるといいね");
+      msg.send(`<@${userid}>の今日の運勢は` + unsei + `だよ。今日は` + camera + "を持って撮りに行こう!　いい写真が撮れるといいね");
     }
     function saveData(name) {
       var asrtasrtaerta = "mochi";
       user_data[user_id] = {
-        data: `$ {
-          nowDate
-        }
-        `, unsei: `$ {
-          omikuzi[omikuzi_randam]
-        }
-        `, camera: `$ {
-          camera_omikuzi[random]
-        }
-        `
+        data: `${nowDate}`, unsei: `${omikuzi[omikuzi_randam]}`, camera: `${camera_omikuzi[random]}`
       }
         ; // var testttttt = `user_data[asrtasrtaerta].data`;
       console.log("—————————————————————————————————————————————————————————————————————————————————\n " + "user = " + user_id + "\n" + "date  = " + user_data[user_id].data);
@@ -103,19 +92,17 @@ module.exports = robot => {
       }
       fs.writeFileSync(fileName, JSON.stringify(Array.from(dataMap)), "utf8");
     }
-  }
-  );
+  });
+
+
+
+
   robot.respond(/ヘルプ|help|-h/i, msg => {
-    console.log(json[0]);
-    console.log(json[1]);
-    console.log(json.api);
-    msg.send(`このBOTに@おみくじでおみくじが引けます。おみくじは一日に一回変わります。\nこのBOTの@photo_club_bot 天気  {
-      場所
-    }
-    で2日間の天気予報をを知ることができます。\nこのボットのGitリポジトリ→ https: //github.com/Mochichi2003/SlackBot`
-    );
-  }
-  );
+    msg.send(`このBOTに@おみくじでおみくじが引けます。おみくじは一日に一回変わります。\nこのBOTの@photo_club_bot 天気  {場所}で2日間の天気予報をを知ることができます。\nこのボットのGitリポジトリ→ https: //github.com/Mochichi2003/SlackBot`);
+  });
+
+
+
   robot.respond(/天気/i, msg => {
     console.log("喋ったこと = " + msg.message.text);
     if (msg.message.text.match(/東京/)) {
@@ -144,6 +131,8 @@ module.exports = robot => {
       city = false;
       msg.send("現在対応しているのは東京、新潟、札幌、横浜、大宮です");
     }
+
+
     console.log("city = " + city);
     if (city != false) {
       $(function () {
@@ -191,22 +180,19 @@ module.exports = robot => {
         ).fail(function (data) {
           msg.send("データを取得できませんでした。");
           console.error("データを取得できませんせんでした");
-        }
-        );
-      }
-      );
+        });
+      });
     }
-  }
-  );
+  });
+
+
+  
   robot.enter(msg => {
     const user_id = msg.message.user.id;
-    msg.send(`<@$ {
-      user_id
-    }
-    >さんサーバルのフォームに記入をお願いします`);
-  }
-  );
+    msg.send(`<@${user_id}>さんサーバルのフォームに記入をお願いします`);
+  });
 }
 
+  
   ;
 console.log("起動しました");
