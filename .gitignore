@@ -4,5 +4,5 @@ node_modules
 *.sh
 *.log
 scripts/data.json
-json
+API_KEY.json
 citylist.json

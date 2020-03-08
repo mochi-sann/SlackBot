@@ -2,7 +2,8 @@
 
 * `@phto_club_bot おみくじ` とするとおみくじを引くことができます
 * `@phto_club_bot 天気 [都市名]` で都市名の天気を知ることができます。現在対応している都市は東京、札幌、横浜、大宮です
-* `@phto_club_bot ヘルプ` でBOTのgitのリポジトリと、使い方を知ることができます,
+* `@phto_club_bot ヘルプ` でBOTのgitのリポジトリと、使い方を知ることができます。
+
 # photo_club_bot  以下 Hubot としての説明
 
 photo_club_bot is a chat bot built on the [Hubot][hubot] framework. It was
