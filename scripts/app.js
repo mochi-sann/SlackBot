@@ -56,23 +56,23 @@ module.exports = robot => {
       // loadData();
     } //おみくじの結果をmap関数に保存
     // dataMap.set({ "user": [`${user_id}`], "omikuzi": [`${omikuzi[omikuzi_randam]}`, "omikuzi" [camera_omikuzi] , "date", [nowDate]] });
-    console.debug("[" + new Date() + "]" + random + "  カメラ = " + camera_omikuzi[random] + " msg = " + `<@$ {
-      user_id
-    }
-    > 運勢=` + omikuzi[omikuzi_randam]);
+    console.debug("[" + new Date() + "]" + random + "  カメラ = " + camera_omikuzi[random] + " msg = " + `<@${user_id}> 運勢=` + omikuzi[omikuzi_randam]);
     console.info("User の投稿した時間 = " + dataMap.get());
     try {
       if (user_data[user_id].data == nowDate) {
-        todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random]); // msg.send(` <@${user_id}>の今日の運勢は` + user_data[user_id].unsei + `だよ。今日は` + user_data[user_id].camera + 'を持って撮りに行こう!　いい写真が撮れるといいね');
+        todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random]);
+         // msg.send(` <@${user_id}>の今日の運勢は` + user_data[user_id].unsei + `だよ。今日は` + user_data[user_id].camera + 'を持って撮りに行こう!　いい写真が撮れるといいね');
       }
       else {
         saveData();
-        todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random]); // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
+        todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random]); 
+        // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
       }
     }
     catch (error) {
       saveData();
-      todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random]); // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
+      todayomikuzi(user_id, omikuzi[omikuzi_randam], camera_omikuzi[random]); 
+      // msg.send(` <@${user_id}>の今日の運勢は` + omikuzi[omikuzi_randam] + `だよ。今日は` + camera_omikuzi[random] + 'を持って撮りに行こう!　いい写真が撮れるといいね');
     }
     function todayomikuzi(userid, unsei, camera) {
       msg.send(`<@${userid}>の今日の運勢は` + unsei + `だよ。今日は` + camera + "を持って撮りに行こう!　いい写真が撮れるといいね");
