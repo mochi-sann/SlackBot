@@ -5,4 +5,4 @@ node_modules
 *.log
 scripts/data.json
 citylist.json
-Json/API_KEY.json
+API_KEY.json
